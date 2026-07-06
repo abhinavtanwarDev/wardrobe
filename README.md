@@ -12,7 +12,7 @@ npm run dev
 ```
 
 Open http://localhost:3000. The service worker is disabled in development
-(`next dev`) to avoid stale-cache confusion while iterating — test PWA
+(`npm run dev`) to avoid stale-cache confusion while iterating — test PWA
 behavior with a production build instead:
 
 ```bash
