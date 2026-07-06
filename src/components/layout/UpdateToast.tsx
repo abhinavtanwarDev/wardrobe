@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 
 export function UpdateToast() {
   const [waitingWorker, setWaitingWorker] = useState<ServiceWorker | null>(
     null,
   );
+  const userInitiatedRefresh = useRef(false);
 
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return;
@@ -22,19 +23,22 @@ export function UpdateToast() {
       });
     };
 
-    navigator.serviceWorker.register("/sw.js").then((registration) => {
-      if (registration.waiting && navigator.serviceWorker.controller) {
-        setWaitingWorker(registration.waiting);
-      }
+    navigator.serviceWorker
+      .register("/sw.js")
+      .then((registration) => {
+        if (registration.waiting && navigator.serviceWorker.controller) {
+          setWaitingWorker(registration.waiting);
+        }
 
-      registration.addEventListener("updatefound", () => {
-        if (registration.installing) trackInstalling(registration.installing);
-      });
-    });
+        registration.addEventListener("updatefound", () => {
+          if (registration.installing) trackInstalling(registration.installing);
+        });
+      })
+      .catch(() => {});
 
     let hasReloaded = false;
     const handleControllerChange = () => {
-      if (hasReloaded) return;
+      if (hasReloaded || !userInitiatedRefresh.current) return;
       hasReloaded = true;
       window.location.reload();
     };
@@ -54,6 +58,7 @@ export function UpdateToast() {
   if (!waitingWorker) return null;
 
   const refresh = () => {
+    userInitiatedRefresh.current = true;
     waitingWorker.postMessage({ type: "SKIP_WAITING" });
   };
 
