@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { APP_NAME, APP_DESCRIPTION } from "@/lib/constants";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "PWA App",
-  description: "A production-ready Progressive Web App scaffold",
+  title: APP_NAME,
+  description: APP_DESCRIPTION,
 };
 
 export default function RootLayout({
@@ -13,7 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="flex min-h-screen flex-col">
+        <Header />
+        <main className="flex-1 p-4">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
