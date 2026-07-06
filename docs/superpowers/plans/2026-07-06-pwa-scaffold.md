@@ -24,6 +24,7 @@
 ### Task 1: Project bootstrap (Next.js, TypeScript, minimal app shell)
 
 **Files:**
+
 - Create: `package.json`
 - Create: `tsconfig.json`
 - Create: `next.config.mjs`
@@ -34,6 +35,7 @@
 - Create: `src/styles/globals.css`
 
 **Interfaces:**
+
 - Produces: npm scripts `dev`, `build`, `start` (later tasks add `lint`, `format`, `format:check`, `typecheck`, `generate-icons`). Path alias `@/*` → `src/*`.
 
 - [ ] **Step 1: Create `package.json`**
@@ -151,7 +153,10 @@ next-env.d.ts
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 ```
 
@@ -208,12 +213,14 @@ git commit -m "chore: bootstrap Next.js app shell"
 ### Task 2: ESLint + Prettier
 
 **Files:**
+
 - Create: `eslint.config.mjs`
 - Create: `.prettierrc.json`
 - Create: `.prettierignore`
 - Modify: `package.json`
 
 **Interfaces:**
+
 - Produces: npm scripts `lint`, `format`, `format:check`, `typecheck`.
 
 - [ ] **Step 1: Install ESLint, Prettier, and Next's ESLint config**
@@ -234,7 +241,12 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   prettierConfig,
   {
-    ignores: [".next/**", "node_modules/**", "public/sw.js", "public/swe-worker-*.js"],
+    ignores: [
+      ".next/**",
+      "node_modules/**",
+      "public/sw.js",
+      "public/swe-worker-*.js",
+    ],
   },
 ];
 
@@ -301,11 +313,13 @@ git commit -m "chore: add ESLint and Prettier"
 ### Task 3: Tailwind CSS v4
 
 **Files:**
+
 - Create: `postcss.config.mjs`
 - Modify: `src/styles/globals.css`
 - Modify: `src/app/page.tsx`
 
 **Interfaces:**
+
 - Produces: `@import "tailwindcss";` available in any CSS file; no `tailwind.config.js` needed for this scaffold (Tailwind v4 CSS-first config).
 
 - [ ] **Step 1: Install Tailwind CSS v4**
@@ -332,7 +346,10 @@ export default config;
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 ```
 
@@ -365,6 +382,7 @@ git commit -m "chore: add Tailwind CSS v4"
 ### Task 4: Folder structure and UI/layout primitives
 
 **Files:**
+
 - Create: `src/components/ui/Button.tsx`
 - Create: `src/components/ui/Card.tsx`
 - Create: `src/components/layout/Header.tsx`
@@ -375,6 +393,7 @@ git commit -m "chore: add Tailwind CSS v4"
 - Modify: `src/app/layout.tsx`
 
 **Interfaces:**
+
 - Produces: `Button` (props: `variant?: "primary" | "secondary"` plus native button attributes), `Card` (native div attributes), `Header`, `Footer` (no props), `APP_NAME`/`APP_DESCRIPTION`/`THEME_COLOR`/`BACKGROUND_COLOR` string constants, `Item` type (`{ id: string; name: string; description: string }`).
 - Consumes: Tailwind classes from Task 3.
 
@@ -522,12 +541,14 @@ git commit -m "feat: add folder structure and UI/layout primitives"
 ### Task 5: Icon generation
 
 **Files:**
+
 - Create: `public/icons/icon.svg`
 - Create: `public/icons/icon-maskable.svg`
 - Create: `scripts/generate-icons.mjs`
 - Modify: `package.json`
 
 **Interfaces:**
+
 - Produces: `public/icons/icon-192x192.png`, `icon-256x256.png`, `icon-384x384.png`, `icon-512x512.png`, `icon-maskable-512x512.png`, `apple-touch-icon.png` — consumed by the manifest and metadata in Task 6.
 
 - [ ] **Step 1: Install sharp (dev only)**
@@ -630,10 +651,12 @@ git commit -m "feat: generate PWA icon set from a master SVG"
 ### Task 6: Web app manifest and metadata
 
 **Files:**
+
 - Create: `public/manifest.webmanifest`
 - Modify: `src/app/layout.tsx`
 
 **Interfaces:**
+
 - Consumes: icon files from Task 5, `APP_NAME`/`APP_DESCRIPTION`/`THEME_COLOR` from Task 4.
 
 - [ ] **Step 1: Create `public/manifest.webmanifest`**
@@ -649,11 +672,32 @@ git commit -m "feat: generate PWA icon set from a master SVG"
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
   "icons": [
-    { "src": "/icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icons/icon-256x256.png", "sizes": "256x256", "type": "image/png" },
-    { "src": "/icons/icon-384x384.png", "sizes": "384x384", "type": "image/png" },
-    { "src": "/icons/icon-512x512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "/icons/icon-maskable-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
 ```
@@ -725,6 +769,7 @@ git commit -m "feat: add web app manifest and PWA metadata"
 ### Task 7: Offline fallback page
 
 **Files:**
+
 - Create: `src/app/offline/page.tsx`
 
 - [ ] **Step 1: Create `src/app/offline/page.tsx`**
@@ -762,10 +807,12 @@ git commit -m "feat: add offline fallback page"
 ### Task 8: Service worker via @serwist/next
 
 **Files:**
+
 - Create: `src/app/sw.ts`
 - Modify: `next.config.mjs`
 
 **Interfaces:**
+
 - Produces: `public/sw.js` (build artifact, gitignored), a `NetworkFirst` cache named `api-cache` for `/api/*`, and a navigation fallback to `/offline`.
 - Consumes: `/offline` route from Task 7.
 
@@ -865,11 +912,13 @@ git commit -m "feat: add service worker with runtime caching and offline fallbac
 ### Task 9: Online/offline hook and banner
 
 **Files:**
+
 - Create: `src/hooks/useOnlineStatus.ts`
 - Create: `src/components/layout/OfflineBanner.tsx`
 - Modify: `src/app/layout.tsx`
 
 **Interfaces:**
+
 - Produces: `useOnlineStatus(): boolean`, `<OfflineBanner />` (no props, renders `null` when online).
 
 - [ ] **Step 1: Create `src/hooks/useOnlineStatus.ts`**
@@ -927,12 +976,12 @@ export function OfflineBanner() {
 - [ ] **Step 3: Add `<OfflineBanner />` to `src/app/layout.tsx`** — insert it as the first child of `<body>`, before `<Header />`:
 
 ```tsx
-      <body className="flex min-h-screen flex-col">
-        <OfflineBanner />
-        <Header />
-        <main className="flex-1 p-4">{children}</main>
-        <Footer />
-      </body>
+<body className="flex min-h-screen flex-col">
+  <OfflineBanner />
+  <Header />
+  <main className="flex-1 p-4">{children}</main>
+  <Footer />
+</body>
 ```
 
 Add the import at the top with the other component imports:
@@ -958,11 +1007,13 @@ git commit -m "feat: add online/offline detection and banner"
 ### Task 10: Install prompt
 
 **Files:**
+
 - Create: `src/hooks/useInstallPrompt.ts`
 - Create: `src/components/layout/InstallPrompt.tsx`
 - Modify: `src/app/layout.tsx`
 
 **Interfaces:**
+
 - Consumes: `Button` from Task 4.
 - Produces: `useInstallPrompt(): { canInstall: boolean; promptInstall: () => Promise<void> }`, `<InstallPrompt />`.
 
@@ -1065,13 +1116,13 @@ export function InstallPrompt() {
 - [ ] **Step 3: Add `<InstallPrompt />` to `src/app/layout.tsx`**, right after `<OfflineBanner />`:
 
 ```tsx
-      <body className="flex min-h-screen flex-col">
-        <OfflineBanner />
-        <InstallPrompt />
-        <Header />
-        <main className="flex-1 p-4">{children}</main>
-        <Footer />
-      </body>
+<body className="flex min-h-screen flex-col">
+  <OfflineBanner />
+  <InstallPrompt />
+  <Header />
+  <main className="flex-1 p-4">{children}</main>
+  <Footer />
+</body>
 ```
 
 Add the import:
@@ -1097,10 +1148,12 @@ git commit -m "feat: add install prompt with iOS fallback instructions"
 ### Task 11: Service worker registration and update toast
 
 **Files:**
+
 - Create: `src/components/layout/UpdateToast.tsx`
 - Modify: `src/app/layout.tsx`
 
 **Interfaces:**
+
 - Consumes: `Button` from Task 4, the `SKIP_WAITING` message contract from `src/app/sw.ts` (Task 8).
 - Produces: `<UpdateToast />` — also responsible for calling `navigator.serviceWorker.register("/sw.js")` (no separate registration component exists).
 
@@ -1180,14 +1233,14 @@ export function UpdateToast() {
 - [ ] **Step 2: Add `<UpdateToast />` to `src/app/layout.tsx`**, as the last child of `<body>`, after `<Footer />`:
 
 ```tsx
-      <body className="flex min-h-screen flex-col">
-        <OfflineBanner />
-        <InstallPrompt />
-        <Header />
-        <main className="flex-1 p-4">{children}</main>
-        <Footer />
-        <UpdateToast />
-      </body>
+<body className="flex min-h-screen flex-col">
+  <OfflineBanner />
+  <InstallPrompt />
+  <Header />
+  <main className="flex-1 p-4">{children}</main>
+  <Footer />
+  <UpdateToast />
+</body>
 ```
 
 Add the import:
@@ -1213,11 +1266,13 @@ git commit -m "feat: register service worker and show update-available toast"
 ### Task 12: Mock API route and sample data page
 
 **Files:**
+
 - Create: `src/app/api/items/route.ts`
 - Create: `src/features/items/ItemsList.tsx`
 - Modify: `src/app/page.tsx`
 
 **Interfaces:**
+
 - Consumes: `Item` type from Task 4, `Card` from Task 4.
 - Produces: `GET /api/items` → `Item[]` JSON.
 
@@ -1313,6 +1368,7 @@ git commit -m "feat: add mock items API and sample data-fetching page"
 ### Task 13: Environment example and README
 
 **Files:**
+
 - Create: `.env.example`
 - Create: `README.md`
 
@@ -1350,35 +1406,35 @@ npm run start
 
 ## Scripts
 
-| Script | Purpose |
-| --- | --- |
-| `npm run dev` | Start the dev server (no service worker) |
-| `npm run build` | Production build (generates `public/sw.js`) |
-| `npm run start` | Serve the production build |
-| `npm run lint` | ESLint |
-| `npm run format` | Prettier, writes fixes |
-| `npm run format:check` | Prettier, check only |
-| `npm run typecheck` | `tsc --noEmit` |
+| Script                   | Purpose                                          |
+| ------------------------ | ------------------------------------------------ |
+| `npm run dev`            | Start the dev server (no service worker)         |
+| `npm run build`          | Production build (generates `public/sw.js`)      |
+| `npm run start`          | Serve the production build                       |
+| `npm run lint`           | ESLint                                           |
+| `npm run format`         | Prettier, writes fixes                           |
+| `npm run format:check`   | Prettier, check only                             |
+| `npm run typecheck`      | `tsc --noEmit`                                   |
 | `npm run generate-icons` | Regenerate `public/icons/*` from the master SVGs |
 
 ## Folder structure
 
 \`\`\`
 src/
-  app/            # routes, layouts, metadata (App Router)
-  components/
-    ui/           # reusable primitives (Button, Card)
-    layout/       # Header, Footer, OfflineBanner, InstallPrompt, UpdateToast
-  features/       # feature-sliced modules (e.g. features/items)
-  hooks/          # useOnlineStatus, useInstallPrompt
-  lib/            # constants, utilities
-  styles/         # globals.css, tokens.css
-  types/          # shared TypeScript types
+app/ # routes, layouts, metadata (App Router)
+components/
+ui/ # reusable primitives (Button, Card)
+layout/ # Header, Footer, OfflineBanner, InstallPrompt, UpdateToast
+features/ # feature-sliced modules (e.g. features/items)
+hooks/ # useOnlineStatus, useInstallPrompt
+lib/ # constants, utilities
+styles/ # globals.css, tokens.css
+types/ # shared TypeScript types
 public/
-  icons/          # generated PWA icon set + master SVGs
-  manifest.webmanifest
+icons/ # generated PWA icon set + master SVGs
+manifest.webmanifest
 scripts/
-  generate-icons.mjs
+generate-icons.mjs
 \`\`\`
 
 ## How the service worker and caching work
