@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { OfflineBanner } from "@/components/layout/OfflineBanner";
 import { InstallPrompt } from "@/components/layout/InstallPrompt";
+import { UpdateToast } from "@/components/layout/UpdateToast";
 import { APP_NAME, APP_DESCRIPTION, THEME_COLOR } from "@/lib/constants";
 import "@/styles/globals.css";
 
@@ -43,6 +44,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-1 p-4">{children}</main>
         <Footer />
+        <UpdateToast />
       </body>
     </html>
   );
