@@ -1,12 +1,31 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { APP_NAME, APP_DESCRIPTION } from "@/lib/constants";
+import { APP_NAME, APP_DESCRIPTION, THEME_COLOR } from "@/lib/constants";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: APP_NAME,
   description: APP_DESCRIPTION,
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: APP_NAME,
+  },
+  icons: {
+    icon: [
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/icons/apple-touch-icon.png",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: THEME_COLOR,
 };
 
 export default function RootLayout({
