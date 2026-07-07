@@ -17,6 +17,9 @@ interface CategoryChipsProps {
   items?: string[];
   /** Unique id so multiple chip rows don't share the same sliding indicator. */
   layoutId?: string;
+  /** Controlled active index; falls back to internal state when omitted. */
+  value?: number;
+  onChange?: (index: number) => void;
   className?: string;
 }
 
@@ -24,9 +27,16 @@ interface CategoryChipsProps {
 export function CategoryChips({
   items = DEFAULT_CATEGORIES,
   layoutId = "chip-active",
+  value,
+  onChange,
   className,
 }: CategoryChipsProps) {
-  const [active, setActive] = useState(0);
+  const [internal, setInternal] = useState(0);
+  const active = value ?? internal;
+  const setActive = (i: number) => {
+    setInternal(i);
+    onChange?.(i);
+  };
 
   return (
     <div
