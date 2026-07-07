@@ -80,7 +80,7 @@ The product is a linear first-run flow that ends on the app home:
 - **Onboarding** — [`OnboardingCarousel`](src/features/onboarding/OnboardingCarousel.tsx): swipeable 4-slide intro (drag, directional transitions, per-slide ambient glow, progress bar, animated dots). Finish/Skip → `/home`.
 - **Home** — [`HomeScreen`](src/features/home/HomeScreen.tsx): masonry wardrobe grid, collection chips, FAB, and [`BottomNav`](src/components/layout/BottomNav.tsx).
 
-Garment imagery is currently offline-safe CSS-gradient placeholders (no external image hosts); the FAB, search, Menu, and Feed/Account nav are styled but not yet wired.
+Beyond the first-run flow, the app surfaces live at `/today` (weather styling feed), `/home` (wardrobe), `/outfits` (+ `/outfits/new` creator: Dress Me shuffle + hand-pick grid), `/planner` (+ trips/packing), `/insights`, and `/profile` — all reading one shared mock dataset in [data.ts](src/features/wardrobe/data.ts). Garment imagery is self-contained SVG flat-lay illustrations ([`GarmentArt`](src/components/ui/GarmentArt.tsx), rendered by [`GarmentTile`](src/components/ui/GarmentTile.tsx)) — no external image hosts, offline-safe. AI, weather, and image capture are styled dummy placeholders awaiting real APIs.
 
 ## Theming & tokens
 

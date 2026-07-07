@@ -1,3 +1,4 @@
+import { GarmentArt } from "@/components/ui/GarmentArt";
 import { outfitPieces, type Outfit } from "@/features/wardrobe/data";
 import { cn } from "@/lib/cn";
 
@@ -13,22 +14,18 @@ export function OutfitCollage({ outfit, className }: OutfitCollageProps) {
   return (
     <div
       className={cn(
-        "grid aspect-square grid-cols-2 gap-1 overflow-hidden rounded-2xl bg-card p-1 shadow-md shadow-black/10 ring-1 ring-black/5",
+        "grid aspect-square grid-cols-2 gap-1 overflow-hidden rounded-2xl bg-card p-1 shadow-md shadow-black/10 ring-1 ring-black/5 dark:ring-white/10",
         className,
       )}
     >
-      {pieces.map((piece) => {
-        const Icon = piece.icon;
-        return (
-          <div
-            key={piece.id}
-            className="grid place-items-center overflow-hidden rounded-xl"
-            style={{ backgroundImage: piece.gradient }}
-          >
-            <Icon className="h-5 w-5 text-white/70 mix-blend-overlay" strokeWidth={1.5} />
-          </div>
-        );
-      })}
+      {pieces.map((piece) => (
+        <div
+          key={piece.id}
+          className="grid place-items-center overflow-hidden rounded-xl bg-background"
+        >
+          <GarmentArt {...piece.art} className="h-[85%] w-[85%]" />
+        </div>
+      ))}
     </div>
   );
 }

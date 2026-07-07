@@ -1,17 +1,9 @@
-import {
-  Footprints,
-  Gem,
-  Glasses,
-  Layers,
-  Shirt,
-  ShoppingBag,
-  Watch,
-  type LucideIcon,
-} from "lucide-react";
+import type { GarmentArtSpec } from "@/components/ui/GarmentArt";
 
 /* Shared mock wardrobe dataset. Every screen (wardrobe, outfits, today,
    planner, insights) reads from here so counts, stats, and suggestions agree.
-   Visuals are offline-safe CSS gradients until real item photos exist. */
+   Visuals are self-contained SVG garment illustrations (see GarmentArt) —
+   offline-safe stand-ins until real item photos exist. */
 
 export type Category =
   | "Tops"
@@ -41,26 +33,13 @@ export interface WardrobeItem {
   wears: number;
   lastWorn: string;
   status: ItemStatus;
-  gradient: string;
-  icon: LucideIcon;
+  art: GarmentArtSpec;
   /** Tailwind aspect class for the masonry grid. */
   aspect: string;
 }
 
-const CATEGORY_ICON: Record<Category, LucideIcon> = {
-  Tops: Shirt,
-  Bottoms: Layers,
-  Outerwear: Shirt,
-  Shoes: Footprints,
-  Accessories: Watch,
-};
-
-const item = (
-  i: Omit<WardrobeItem, "icon"> & { icon?: LucideIcon },
-): WardrobeItem => ({ icon: CATEGORY_ICON[i.category], ...i });
-
 export const ITEMS: WardrobeItem[] = [
-  item({
+  {
     id: "linen-shirt",
     name: "Linen shirt",
     brand: "Uniqlo",
@@ -71,10 +50,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 24,
     lastWorn: "2 days ago",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#f5f5f4,#d6d3d1)",
+    art: { kind: "shirt", color: "#efe9dc", detail: "#b8ad94" },
     aspect: "aspect-[3/4]",
-  }),
-  item({
+  },
+  {
     id: "charcoal-tee",
     name: "Charcoal tee",
     brand: "COS",
@@ -85,10 +64,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 41,
     lastWorn: "Yesterday",
     status: "In laundry",
-    gradient: "linear-gradient(150deg,#44403c,#292524)",
+    art: { kind: "tee", color: "#3f3c39", detail: "#242220" },
     aspect: "aspect-square",
-  }),
-  item({
+  },
+  {
     id: "striped-knit",
     name: "Striped knit",
     brand: "Arket",
@@ -99,10 +78,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 12,
     lastWorn: "1 week ago",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#e7e5e4,#a8a29e)",
+    art: { kind: "knit", color: "#e8e2d4", detail: "#9d9178", pattern: "stripes" },
     aspect: "aspect-[3/5]",
-  }),
-  item({
+  },
+  {
     id: "silk-blouse",
     name: "Silk blouse",
     brand: "Massimo Dutti",
@@ -113,10 +92,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 6,
     lastWorn: "3 weeks ago",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#efebe9,#d7ccc8)",
+    art: { kind: "shirt", color: "#f3ede2", detail: "#c4b795" },
     aspect: "aspect-[3/4]",
-  }),
-  item({
+  },
+  {
     id: "wide-leg-trousers",
     name: "Wide-leg trousers",
     brand: "Everlane",
@@ -127,10 +106,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 33,
     lastWorn: "2 days ago",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#d6d3d1,#a8a29e)",
+    art: { kind: "trousers", color: "#cfc8bc", detail: "#9a9184" },
     aspect: "aspect-[3/5]",
-  }),
-  item({
+  },
+  {
     id: "raw-denim",
     name: "Raw denim jeans",
     brand: "Levi's",
@@ -141,10 +120,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 58,
     lastWorn: "Yesterday",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#334155,#1e293b)",
+    art: { kind: "jeans", color: "#3b4a63", detail: "#273347" },
     aspect: "aspect-[3/4]",
-  }),
-  item({
+  },
+  {
     id: "pleated-skirt",
     name: "Pleated midi skirt",
     brand: "& Other Stories",
@@ -155,10 +134,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 9,
     lastWorn: "2 weeks ago",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#e5e7eb,#9ca3af)",
+    art: { kind: "skirt", color: "#d9d5cf", detail: "#a29c92" },
     aspect: "aspect-[3/5]",
-  }),
-  item({
+  },
+  {
     id: "linen-shorts",
     name: "Linen shorts",
     brand: "Muji",
@@ -169,10 +148,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 15,
     lastWorn: "4 days ago",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#efebe9,#bcaaa4)",
+    art: { kind: "shorts", color: "#e6ddcc", detail: "#b3a684" },
     aspect: "aspect-square",
-  }),
-  item({
+  },
+  {
     id: "wool-overcoat",
     name: "Wool overcoat",
     brand: "COS",
@@ -183,10 +162,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 18,
     lastWorn: "5 months ago",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#c7b8a5,#a68d6e)",
+    art: { kind: "coat", color: "#c8b295", detail: "#94805f" },
     aspect: "aspect-[3/5]",
-  }),
-  item({
+  },
+  {
     id: "denim-jacket",
     name: "Denim jacket",
     brand: "Levi's",
@@ -197,10 +176,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 27,
     lastWorn: "1 week ago",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#93c5fd,#60a5fa)",
+    art: { kind: "jacket", color: "#7d9bc0", detail: "#52709a" },
     aspect: "aspect-[3/4]",
-  }),
-  item({
+  },
+  {
     id: "rain-shell",
     name: "Rain shell",
     brand: "Rains",
@@ -211,10 +190,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 7,
     lastWorn: "3 days ago",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#64748b,#475569)",
+    art: { kind: "shell", color: "#6d7b8c", detail: "#485563" },
     aspect: "aspect-[3/4]",
-  }),
-  item({
+  },
+  {
     id: "white-sneakers",
     name: "White sneakers",
     brand: "Veja",
@@ -225,10 +204,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 74,
     lastWorn: "Today",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#fafaf9,#d6d3d1)",
+    art: { kind: "sneaker", color: "#f7f6f3", detail: "#b5b1a8" },
     aspect: "aspect-square",
-  }),
-  item({
+  },
+  {
     id: "leather-loafers",
     name: "Leather loafers",
     brand: "G.H. Bass",
@@ -239,10 +218,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 21,
     lastWorn: "6 days ago",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#57534e,#292524)",
+    art: { kind: "loafer", color: "#5b4636", detail: "#372a1f" },
     aspect: "aspect-[4/5]",
-  }),
-  item({
+  },
+  {
     id: "suede-boots",
     name: "Suede chelsea boots",
     brand: "Clarks",
@@ -253,10 +232,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 11,
     lastWorn: "4 months ago",
     status: "Lent out",
-    gradient: "linear-gradient(150deg,#bcaaa4,#8d6e63)",
+    art: { kind: "boot", color: "#a58a70", detail: "#71604e" },
     aspect: "aspect-[3/4]",
-  }),
-  item({
+  },
+  {
     id: "canvas-tote",
     name: "Canvas tote",
     brand: "Baggu",
@@ -267,11 +246,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 52,
     lastWorn: "Today",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#e7e5e4,#c7c2bd)",
+    art: { kind: "tote", color: "#e9e2d2", detail: "#ab9e7e" },
     aspect: "aspect-square",
-    icon: ShoppingBag,
-  }),
-  item({
+  },
+  {
     id: "steel-watch",
     name: "Steel watch",
     brand: "Seiko",
@@ -282,10 +260,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 63,
     lastWorn: "Yesterday",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#cbd5e1,#94a3b8)",
+    art: { kind: "watch", color: "#cdd3d9", detail: "#828b94" },
     aspect: "aspect-[4/5]",
-  }),
-  item({
+  },
+  {
     id: "tortoise-sunglasses",
     name: "Tortoise sunglasses",
     brand: "Ray-Ban",
@@ -296,11 +274,10 @@ export const ITEMS: WardrobeItem[] = [
     wears: 19,
     lastWorn: "3 days ago",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#a8a29e,#78716c)",
+    art: { kind: "glasses", color: "#6b4a2f", detail: "#402c1b" },
     aspect: "aspect-square",
-    icon: Glasses,
-  }),
-  item({
+  },
+  {
     id: "gold-pendant",
     name: "Gold pendant",
     brand: "Mejuri",
@@ -311,10 +288,99 @@ export const ITEMS: WardrobeItem[] = [
     wears: 30,
     lastWorn: "2 days ago",
     status: "Clean",
-    gradient: "linear-gradient(150deg,#e7dbc7,#cbb27f)",
+    art: { kind: "pendant", color: "#d9b979", detail: "#a8853f" },
     aspect: "aspect-[3/4]",
-    icon: Gem,
-  }),
+  },
+];
+
+/* Starter catalog shown in the outfit builder ("Popular clothes") — pieces
+   most closets have, so a look can be finished even before everything's
+   been added. Not counted in wardrobe stats. */
+export const POPULAR_ITEMS: WardrobeItem[] = [
+  {
+    id: "pop-white-tee",
+    name: "White tee",
+    brand: "Popular",
+    category: "Tops",
+    color: "White",
+    seasons: ["All year"],
+    price: 20,
+    wears: 0,
+    lastWorn: "—",
+    status: "Clean",
+    art: { kind: "tee", color: "#f8f7f4", detail: "#c4c0b6" },
+    aspect: "aspect-square",
+  },
+  {
+    id: "pop-black-tee",
+    name: "Black tee",
+    brand: "Popular",
+    category: "Tops",
+    color: "Black",
+    seasons: ["All year"],
+    price: 20,
+    wears: 0,
+    lastWorn: "—",
+    status: "Clean",
+    art: { kind: "tee", color: "#2b2926", detail: "#141312" },
+    aspect: "aspect-square",
+  },
+  {
+    id: "pop-grey-hoodie",
+    name: "Grey hoodie",
+    brand: "Popular",
+    category: "Outerwear",
+    color: "Heather gray",
+    seasons: ["Autumn", "Winter"],
+    price: 55,
+    wears: 0,
+    lastWorn: "—",
+    status: "Clean",
+    art: { kind: "hoodie", color: "#b8b4ae", detail: "#84807a" },
+    aspect: "aspect-square",
+  },
+  {
+    id: "pop-light-jeans",
+    name: "Light-wash jeans",
+    brand: "Popular",
+    category: "Bottoms",
+    color: "Light blue",
+    seasons: ["All year"],
+    price: 60,
+    wears: 0,
+    lastWorn: "—",
+    status: "Clean",
+    art: { kind: "jeans", color: "#8ba3c0", detail: "#5f7a99" },
+    aspect: "aspect-square",
+  },
+  {
+    id: "pop-court-sneakers",
+    name: "Court sneakers",
+    brand: "Popular",
+    category: "Shoes",
+    color: "White",
+    seasons: ["All year"],
+    price: 90,
+    wears: 0,
+    lastWorn: "—",
+    status: "Clean",
+    art: { kind: "sneaker", color: "#f4f4f2", detail: "#adaba4" },
+    aspect: "aspect-square",
+  },
+  {
+    id: "pop-black-cap",
+    name: "Black cap",
+    brand: "Popular",
+    category: "Accessories",
+    color: "Black",
+    seasons: ["All year"],
+    price: 30,
+    wears: 0,
+    lastWorn: "—",
+    status: "Clean",
+    art: { kind: "cap", color: "#2e2c2a", detail: "#171615" },
+    aspect: "aspect-square",
+  },
 ];
 
 export type Occasion = "Work" | "Weekend" | "Date night" | "Travel";
@@ -445,7 +511,7 @@ export const TRIPS: Trip[] = [
 /* ---------- helpers ---------- */
 
 export function getItem(id: string): WardrobeItem | undefined {
-  return ITEMS.find((i) => i.id === id);
+  return ITEMS.find((i) => i.id === id) ?? POPULAR_ITEMS.find((i) => i.id === id);
 }
 
 export function getOutfit(id: string): Outfit | undefined {
