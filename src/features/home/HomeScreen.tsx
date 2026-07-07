@@ -1,38 +1,18 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
-import {
-  Footprints,
-  Plus,
-  Search,
-  Shirt,
-  ShoppingBag,
-  Watch,
-  type LucideIcon,
-} from "lucide-react";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
+import Link from "next/link";
+import { Plus, Search, SearchX, X } from "lucide-react";
+import { useMemo, useState } from "react";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { GarmentTile } from "@/components/ui/GarmentTile";
+import { RoundIconButton } from "@/components/ui/RoundIconButton";
 import { CategoryChips } from "@/features/welcome/CategoryChips";
+import { CATEGORIES, ITEMS, OUTFITS } from "@/features/wardrobe/data";
 
-const COLLECTIONS = ["All", "Paris Trip", "Summer", "Work", "Weekend"];
+const MotionLink = motion.create(Link);
 
-interface Piece {
-  gradient: string;
-  aspect: string; // tailwind aspect ratio for a masonry feel
-  icon: LucideIcon;
-}
-
-const PIECES: Piece[] = [
-  { gradient: "linear-gradient(150deg,#e7e5e4,#a8a29e)", aspect: "aspect-[3/4]", icon: Shirt },
-  { gradient: "linear-gradient(150deg,#292524,#57534e)", aspect: "aspect-[3/5]", icon: ShoppingBag },
-  { gradient: "linear-gradient(150deg,#efebe9,#bcaaa4)", aspect: "aspect-square", icon: Watch },
-  { gradient: "linear-gradient(150deg,#dbeafe,#93c5fd)", aspect: "aspect-[3/4]", icon: Footprints },
-  { gradient: "linear-gradient(150deg,#f5f5f4,#d6d3d1)", aspect: "aspect-[3/5]", icon: Shirt },
-  { gradient: "linear-gradient(150deg,#d6d3d1,#78716c)", aspect: "aspect-square", icon: ShoppingBag },
-  { gradient: "linear-gradient(150deg,#e5e7eb,#9ca3af)", aspect: "aspect-[3/4]", icon: Watch },
-  { gradient: "linear-gradient(150deg,#c7c2bd,#8a8580)", aspect: "aspect-[4/5]", icon: Footprints },
-  { gradient: "linear-gradient(150deg,#efebe9,#bcaaa4)", aspect: "aspect-[3/4]", icon: Shirt },
-  { gradient: "linear-gradient(150deg,#e7e5e4,#a8a29e)", aspect: "aspect-square", icon: ShoppingBag },
-];
+const FILTERS = ["All", ...CATEGORIES];
 
 const grid: Variants = {
   hidden: {},
@@ -50,6 +30,30 @@ const tile: Variants = {
 };
 
 export function HomeScreen() {
+  const [filter, setFilter] = useState(0);
+  const [searching, setSearching] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const visible = useMemo(
+    () =>
+      filter === 0
+        ? ITEMS
+        : ITEMS.filter((i) => i.category === FILTERS[filter]),
+    [filter],
+  );
+
+  const results = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return ITEMS;
+    return ITEMS.filter(
+      (i) =>
+        i.name.toLowerCase().includes(q) ||
+        i.brand.toLowerCase().includes(q) ||
+        i.color.toLowerCase().includes(q) ||
+        i.category.toLowerCase().includes(q),
+    );
+  }, [query]);
+
   return (
     <div className="relative min-h-[100dvh] bg-background text-foreground">
       <div className="px-5 pt-[calc(env(safe-area-inset-top)+1.5rem)] pb-32">
@@ -65,60 +69,57 @@ export function HomeScreen() {
             <h1 className="mt-1 text-3xl font-semibold tracking-tight">
               Your Wardrobe
             </h1>
-            <p className="mt-1 text-sm text-muted">42 pieces · 6 collections</p>
+            <p className="mt-1 text-sm text-muted">
+              {ITEMS.length} pieces · {OUTFITS.length} looks
+            </p>
           </div>
-          <motion.button
-            type="button"
-            aria-label="Search wardrobe"
-            whileTap={{ scale: 0.9 }}
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            className="grid h-11 w-11 place-items-center rounded-full border border-border bg-card shadow-sm"
-          >
-            <Search className="h-5 w-5" strokeWidth={2} />
-          </motion.button>
+          <RoundIconButton
+            icon={Search}
+            label="Search wardrobe"
+            onClick={() => setSearching(true)}
+          />
         </motion.header>
 
-        {/* Collections */}
+        {/* Category filter */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.08, type: "spring", stiffness: 220, damping: 24 }}
           className="mb-6"
         >
-          <CategoryChips items={COLLECTIONS} layoutId="home-collections" />
+          <CategoryChips
+            items={FILTERS}
+            layoutId="home-collections"
+            value={filter}
+            onChange={setFilter}
+          />
         </motion.div>
 
-        {/* Masonry grid */}
+        {/* Masonry grid — re-staggers on filter change */}
         <motion.div
+          key={filter}
           variants={grid}
           initial="hidden"
           animate="show"
           className="columns-2 gap-3 [column-fill:_balance]"
         >
-          {PIECES.map((piece, i) => {
-            const Icon = piece.icon;
-            return (
-              <motion.button
-                key={i}
-                type="button"
-                variants={tile}
-                whileTap={{ scale: 0.97 }}
-                className={`mb-3 grid w-full break-inside-avoid place-items-center overflow-hidden rounded-2xl shadow-md shadow-black/10 ring-1 ring-black/5 ${piece.aspect}`}
-                style={{ backgroundImage: piece.gradient }}
-              >
-                <Icon
-                  className="h-8 w-8 text-white/70 mix-blend-overlay"
-                  strokeWidth={1.5}
-                />
-              </motion.button>
-            );
-          })}
+          {visible.map((item) => (
+            <MotionLink
+              key={item.id}
+              href={`/items/${item.id}`}
+              variants={tile}
+              whileTap={{ scale: 0.97 }}
+              className="mb-3 block break-inside-avoid"
+            >
+              <GarmentTile item={item} label />
+            </MotionLink>
+          ))}
         </motion.div>
       </div>
 
       {/* Floating add button */}
-      <motion.button
-        type="button"
+      <MotionLink
+        href="/items/new"
         aria-label="Add a piece"
         initial={{ opacity: 0, scale: 0.6 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -128,7 +129,78 @@ export function HomeScreen() {
         className="fixed right-5 bottom-[calc(env(safe-area-inset-bottom)+5.5rem)] z-40 grid h-14 w-14 place-items-center rounded-full bg-accent text-accent-foreground shadow-xl shadow-accent/30"
       >
         <Plus className="h-6 w-6" strokeWidth={2.5} />
-      </motion.button>
+      </MotionLink>
+
+      {/* Search overlay */}
+      <AnimatePresence>
+        {searching && (
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 24 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed inset-0 z-50 flex flex-col bg-background px-5 pt-[calc(env(safe-area-inset-top)+1rem)]"
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 flex-1 items-center gap-2.5 rounded-full border border-border bg-card px-4 shadow-sm">
+                <Search className="h-5 w-5 shrink-0 text-muted" strokeWidth={2} />
+                <input
+                  autoFocus
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search by name, brand, or color"
+                  className="w-full bg-transparent text-base outline-none placeholder:text-muted-2"
+                />
+              </div>
+              <RoundIconButton
+                icon={X}
+                label="Close search"
+                onClick={() => {
+                  setSearching(false);
+                  setQuery("");
+                }}
+              />
+            </div>
+
+            <div className="no-scrollbar mt-5 flex-1 overflow-y-auto pb-[calc(env(safe-area-inset-bottom)+1.5rem)]">
+              {results.length === 0 ? (
+                <div className="flex flex-col items-center px-8 pt-20 text-center">
+                  <div className="grid h-16 w-16 place-items-center rounded-2xl border border-border bg-card shadow-sm">
+                    <SearchX className="h-7 w-7 text-muted" strokeWidth={1.5} />
+                  </div>
+                  <p className="mt-4 text-base font-semibold">Nothing matches</p>
+                  <p className="mt-1 text-sm text-muted">
+                    Try a different word — or add it to your wardrobe.
+                  </p>
+                </div>
+              ) : (
+                <motion.ul variants={grid} initial="hidden" animate="show">
+                  {results.map((item) => (
+                    <motion.li key={item.id} variants={tile}>
+                      <Link
+                        href={`/items/${item.id}`}
+                        className="flex items-center gap-4 rounded-2xl px-2 py-2.5 active:bg-card"
+                      >
+                        <GarmentTile
+                          item={item}
+                          aspect="aspect-square"
+                          className="h-14 w-14 rounded-xl shadow-sm"
+                        />
+                        <div className="min-w-0">
+                          <p className="truncate text-base font-medium">{item.name}</p>
+                          <p className="truncate text-sm text-muted">
+                            {item.brand} · {item.category}
+                          </p>
+                        </div>
+                      </Link>
+                    </motion.li>
+                  ))}
+                </motion.ul>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <BottomNav active="wardrobe" />
     </div>

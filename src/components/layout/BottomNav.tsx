@@ -1,48 +1,58 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LayoutGrid, Sparkles, User, type LucideIcon } from "lucide-react";
-import { useState } from "react";
-import { cn } from "@/lib/cn";
+import Link from "next/link";
+import {
+  CalendarDays,
+  LayoutGrid,
+  Layers,
+  Sparkles,
+  User,
+  type LucideIcon,
+} from "lucide-react";
+
+const MotionLink = motion.create(Link);
+
+export type NavKey = "today" | "wardrobe" | "outfits" | "planner" | "profile";
 
 interface NavItem {
-  key: string;
+  key: NavKey;
   label: string;
   icon: LucideIcon;
+  href: string;
 }
 
 const ITEMS: NavItem[] = [
-  { key: "wardrobe", label: "Wardrobe", icon: LayoutGrid },
-  { key: "feed", label: "Feed", icon: Sparkles },
-  { key: "account", label: "Account", icon: User },
+  { key: "today", label: "Today", icon: Sparkles, href: "/today" },
+  { key: "wardrobe", label: "Wardrobe", icon: LayoutGrid, href: "/home" },
+  { key: "outfits", label: "Outfits", icon: Layers, href: "/outfits" },
+  { key: "planner", label: "Planner", icon: CalendarDays, href: "/planner" },
+  { key: "profile", label: "Profile", icon: User, href: "/profile" },
 ];
 
 interface BottomNavProps {
-  active?: string;
+  active: NavKey;
 }
 
 /** Fixed bottom navigation with an animated active pill. Sits above the home indicator. */
-export function BottomNav({ active = "wardrobe" }: BottomNavProps) {
-  const [current, setCurrent] = useState(active);
-
+export function BottomNav({ active }: BottomNavProps) {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
-      <div className="flex items-center gap-1 rounded-full border border-border bg-card/80 p-1.5 shadow-lg shadow-black/10 backdrop-blur-xl">
+      <div className="flex items-center gap-0.5 rounded-full border border-border bg-card/80 p-1.5 shadow-lg shadow-black/10 backdrop-blur-xl">
         {ITEMS.map((item) => {
-          const isActive = item.key === current;
+          const isActive = item.key === active;
           const Icon = item.icon;
           return (
-            <motion.button
+            <MotionLink
               key={item.key}
-              type="button"
-              onClick={() => setCurrent(item.key)}
+              href={item.href}
               whileTap={{ scale: 0.92 }}
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
               aria-current={isActive ? "page" : undefined}
-              className={cn(
-                "relative flex h-11 items-center gap-2 rounded-full px-4 text-sm font-medium",
-                isActive ? "text-background" : "text-muted",
-              )}
+              aria-label={item.label}
+              className={`relative flex h-11 items-center gap-1.5 rounded-full text-sm font-medium ${
+                isActive ? "px-3.5 text-background" : "px-3 text-muted"
+              }`}
             >
               {isActive && (
                 <motion.span
@@ -51,11 +61,11 @@ export function BottomNav({ active = "wardrobe" }: BottomNavProps) {
                   className="absolute inset-0 rounded-full bg-foreground"
                 />
               )}
-              <span className="relative z-10 flex items-center gap-2">
+              <span className="relative z-10 flex items-center gap-1.5">
                 <Icon className="h-5 w-5" strokeWidth={2} />
                 {isActive && <span>{item.label}</span>}
               </span>
-            </motion.button>
+            </MotionLink>
           );
         })}
       </div>
