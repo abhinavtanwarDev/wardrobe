@@ -1,4 +1,38 @@
+/* Semantic design tokens — the single source of color truth.
+   Dark mode is a token swap on the `.dark` class (see globals.css). */
 :root {
-  color-scheme: light dark;
-  --color-brand: #2563eb;
+  color-scheme: light;
+
+  --background: #fafaf9; /* stone canvas */
+  --foreground: #0a0a0a; /* ink */
+  --muted: #78716c; /* warm gray text */
+  --muted-2: #a8a29e;
+  --card: #ffffff;
+  --border: rgba(10, 10, 10, 0.08);
+  --border-strong: rgba(10, 10, 10, 0.14);
+  --accent: #2563eb; /* the one accent */
+  --accent-foreground: #ffffff;
+
+  /* Inverted surface used by the floating pill nav */
+  --nav: #0a0a0a;
+  --nav-foreground: #fafaf9;
+  --nav-muted: rgba(250, 250, 249, 0.55);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #0a0a0a;
+  --foreground: #fafaf9;
+  --muted: #a3a3a3;
+  --muted-2: #6b6b6b;
+  --card: #171717;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --accent: #3b82f6;
+  --accent-foreground: #0a0a0a;
+
+  --nav: #fafaf9;
+  --nav-foreground: #0a0a0a;
+  --nav-muted: rgba(10, 10, 10, 0.55);
 }

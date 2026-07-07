@@ -1,10 +1,61 @@
 @import "tailwindcss";
 @import "./tokens.css";
 
+/* Class-based dark mode: `dark:` utilities respond to a `.dark` ancestor. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Expose semantic tokens to Tailwind utilities:
+   bg-background, text-foreground, text-muted, bg-card, border-border,
+   bg-accent, bg-nav, text-nav-foreground, etc. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-2: var(--muted-2);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-nav: var(--nav);
+  --color-nav-foreground: var(--nav-foreground);
+  --color-nav-muted: var(--nav-muted);
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
 body {
   margin: 0;
+  background-color: var(--background);
+  color: var(--foreground);
   font-family:
     system-ui,
     -apple-system,
+    "Segoe UI",
     sans-serif;
+  /* Prevent horizontal scroll from the orbit hero on narrow screens. */
+  overflow-x: hidden;
+}
+
+/* Honor reduced-motion for everyone who asks for it. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Hide scrollbars on horizontal snap rows while keeping them scrollable. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
