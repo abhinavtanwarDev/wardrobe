@@ -7,13 +7,13 @@ import {
   Images,
   Link2,
   Mail,
-  Shirt,
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ArrowPill } from "@/components/ui/ArrowPill";
+import { GarmentArt } from "@/components/ui/GarmentArt";
 import { ScreenHeader } from "@/components/ui/ScreenHeader";
 import { CATEGORIES } from "@/features/wardrobe/data";
 import { cn } from "@/lib/cn";
@@ -36,12 +36,12 @@ const CAPTURE_OPTIONS: CaptureOption[] = [
 ];
 
 const SWATCHES = [
-  { name: "Off-white", value: "#f5f5f4" },
-  { name: "Stone", value: "#d6d3d1" },
-  { name: "Camel", value: "#c7b8a5" },
-  { name: "Charcoal", value: "#44403c" },
-  { name: "Ink", value: "#1c1917" },
-  { name: "Slate blue", value: "#64748b" },
+  { name: "Off-white", value: "#f5f5f4", detail: "#c2beb4" },
+  { name: "Stone", value: "#d6d3d1", detail: "#a09c96" },
+  { name: "Camel", value: "#c7b8a5", detail: "#94856f" },
+  { name: "Charcoal", value: "#44403c", detail: "#262422" },
+  { name: "Ink", value: "#1c1917", detail: "#0c0b0a" },
+  { name: "Slate blue", value: "#64748b", detail: "#414c5c" },
 ];
 
 const SEASONS = ["Spring", "Summer", "Autumn", "Winter", "All year"];
@@ -131,10 +131,9 @@ export function AddItemScreen() {
               <motion.div
                 animate={{ scale: [1, 1.06, 1] }}
                 transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut" }}
-                className="grid h-24 w-24 place-items-center rounded-3xl shadow-lg shadow-black/10 ring-1 ring-black/5"
-                style={{ backgroundImage: "linear-gradient(150deg,#e7e5e4,#a8a29e)" }}
+                className="grid h-24 w-24 place-items-center rounded-3xl bg-card shadow-lg shadow-black/10 ring-1 ring-black/5 dark:ring-white/10"
               >
-                <Shirt className="h-9 w-9 text-white/70 mix-blend-overlay" strokeWidth={1.5} />
+                <GarmentArt kind="shirt" color="#e8e2d4" detail="#9d9178" className="h-20 w-20" />
               </motion.div>
               <p className="mt-6 text-lg font-semibold">Preparing your piece…</p>
               <p className="mt-1 text-sm text-muted">Lifting it onto a clean canvas</p>
@@ -156,13 +155,13 @@ export function AddItemScreen() {
               <motion.div variants={list} initial="hidden" animate="show" className="flex flex-col gap-6">
                 {/* Preview */}
                 <motion.div variants={row} className="flex items-center gap-4">
-                  <div
-                    className="grid h-24 w-24 place-items-center rounded-3xl shadow-md shadow-black/10 ring-1 ring-black/5"
-                    style={{
-                      backgroundImage: `linear-gradient(150deg,${SWATCHES[swatch].value},#a8a29e)`,
-                    }}
-                  >
-                    <Shirt className="h-8 w-8 text-white/70 mix-blend-overlay" strokeWidth={1.5} />
+                  <div className="grid h-24 w-24 place-items-center rounded-3xl bg-card shadow-md shadow-black/10 ring-1 ring-black/5 dark:ring-white/10">
+                    <GarmentArt
+                      kind="shirt"
+                      color={SWATCHES[swatch].value}
+                      detail={SWATCHES[swatch].detail}
+                      className="h-20 w-20"
+                    />
                   </div>
                   <div className="flex items-center gap-2 rounded-full bg-accent/10 px-3.5 py-2 text-sm font-medium text-accent">
                     <Sparkles className="h-4 w-4" strokeWidth={2} />
